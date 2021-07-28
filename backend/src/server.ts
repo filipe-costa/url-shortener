@@ -4,7 +4,7 @@ import cors from "cors"
 import helmet from "helmet"
 import Hashids from "hashids"
 import {UrlEntity} from "./db/entity/Url"
-import { formatUrl } from "./utils/url"
+import { formatUrl, isValidUrl } from "./utils/url"
 
 export default async() => {
   return createConnection().then(async(connection) => {
@@ -40,18 +40,22 @@ export default async() => {
   
     app.post("/urls", (req, res) => {
       const body = req.body
-      URLRepository.insert({url: body.url})
-        .then((entity) => {
-          const baseUrl = formatUrl(req.protocol, "://", req.get("host") as string, "/", hashids.encode(entity.identifiers[0].id))
-          res.status(200).json({
-            url: baseUrl
+      const url = body.url
+      if(isValidUrl(url)) {
+          return URLRepository.insert({url})
+          .then((entity) => {
+            const baseUrl = formatUrl(req.protocol, "://", req.get("host") as string, "/", hashids.encode(entity.identifiers[0].id))
+            res.status(200).json({
+              url: baseUrl
+            })
           })
-        })
-        .catch(() => {
-          res.sendStatus(404)
-        })
+          .catch(() => {
+            res.sendStatus(404)
+          })
+      }
+      return res.status(404).json({message: "Invalid url"})
     })
-  
+
     return app.listen(process.env.HTTP_PORT, () => {
       console.log(`Listening on port http://localhost:${process.env.HTTP_PORT}`)
     })
