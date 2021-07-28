@@ -62,7 +62,6 @@ export const App = () => {
   }
   
   return (
-    // Vertically and Horizontally centered in the middle of the page
     <Container>
       <main>
         <section className="flex flex-col justify-items-center items-center py-40 space-y-10">
