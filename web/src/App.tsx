@@ -5,13 +5,19 @@ import { Typography } from './components/Typography/Typography';
 import { Form, FieldGroup, FieldInput, FieldMessage, FieldLabel, Button } from './components/Form';
 import { URLService } from './services/url';
 
+type InitialStateType = {
+  url: string
+  successMessage: string | null
+  errorMessage: string | null
+}
+
 const initialState = {
   successMessage: "",
   errorMessage: "",
   url: ""
 }
 
-const reducer = (state: any, action: any) => {
+const reducer = (state: InitialStateType, action: any) => {
   switch(action.type) {
     case "event/setUrlText":
       return {...state, url: action.payload}
@@ -20,7 +26,7 @@ const reducer = (state: any, action: any) => {
     case "event/setSuccessMessage":
       return {...state, successMessage: action.payload, errorMessage: null}
     default:
-      throw new Error()
+      return state
   }
 }
 
