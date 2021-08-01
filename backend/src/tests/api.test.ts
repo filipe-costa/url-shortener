@@ -1,13 +1,8 @@
-import { Connection, Repository, createConnection, getConnection} from "typeorm";
+import { Connection, Repository, getConnection} from "typeorm";
 import axios from "axios"
-import dotenv from "dotenv"
 import { Server } from "http"
-import path from "path"
-
 import { Url, UrlEntity } from "../db/entity/Url";
 import server from "../server"
-
-dotenv.config({path: path.join(__dirname, "../../", "test.env")})
 
 describe("API Testing module", () => {
   const BASE_URL = `http://localhost:${process.env.HTTP_PORT}`

@@ -39,6 +39,7 @@ export const App = () => {
     if(!state.url) {
       return
     }
+    setCopied(false)
     dispatch({type: "event/setErrorMessage", payload: null})
     dispatch({type: "event/setSuccessMessage", payload: null})
     URLService.generate({url: state.url})

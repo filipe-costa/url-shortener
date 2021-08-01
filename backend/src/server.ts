@@ -44,12 +44,16 @@ export default async() => {
       if(isValidUrl(url)) {
           return URLRepository.insert({url})
           .then((entity) => {
-            const baseUrl = formatUrl(req.protocol, "://", req.get("host") as string, "/", hashids.encode(entity.identifiers[0].id))
+            // If it has a scheme we are using NGINX
+            const hasScheme = ["http","https"].find((str) => req.get("host")?.includes(str)) as string
+            const url = hasScheme ? req.get("host") as string : `${req.protocol}://localhost:${process.env.HTTP_PORT}/`
+            const baseUrl = formatUrl(url, hashids.encode(entity.identifiers[0].id))
             res.status(200).json({
               url: baseUrl
             })
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log({err})
             res.sendStatus(404)
           })
       }

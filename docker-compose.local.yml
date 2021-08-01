@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["yarn", "start:dev"]
+    volumes:
+      - ./backend/src:/backend/src
+    env_file:
+      - ./env/dev.env
+    ports: 
+      - "8000"
+    networks: 
+      - url-shortener-local
+
+  frontend:
+    build: 
+      context: ./web
+      dockerfile: Dockerfile
+    command: ["yarn", "start"]
+    volumes: 
+      - ./web/src:/web/src
+      - ./web/public:/web/public
+    env_file:
+      - ./env/dev.env
+    ports:
+      - "3000"
+    networks:
+      - url-shortener-local
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    command: ["nginx-debug", "-g", "daemon off;"]
+    ports: 
+      - "3000:80"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - url-shortener-local
+
+
+networks:
+  url-shortener-local: {}

@@ -103,4 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
-**/*.db*
+node_modules
+build
+env
+scripts
+src/db/migrations
+src/db/storage

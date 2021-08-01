@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  backend-test:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["yarn", "test"]
+    env_file:
+      - ./env/test.env
+    ports: 
+      - "8000"
+    networks: 
+      - url-shortener-test
+  
+  # web-test:
+  #   build: 
+  #     context: ./web
+  #     dockerfile: Dockerfile.test
+  #   env_file:
+  #     - ./env/test.env
+  #   ports: 
+  #     - "8000"
+  #   networks: 
+  #     - url-shortener-test
+
+networks: 
+  url-shortener-test: {}

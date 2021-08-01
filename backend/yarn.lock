@@ -1303,13 +1303,6 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
-"@types/sqlite3@^3.1.7":
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/@types/sqlite3/-/sqlite3-3.1.7.tgz#84fbc65946603d15cff4968d0cb283d1879dd156"
-  integrity sha512-8FHV/8Uzd7IwdHm5mvmF2Aif4aC/gjrt4axWD9SmfaxITnOjtOhCbOSTuqv/VbH1uq0QrwlaTj9aTz3gmR6u4w==
-  dependencies:
-    "@types/node" "*"
-
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"

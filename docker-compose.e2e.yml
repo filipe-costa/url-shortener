@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["yarn", "start:dev"]
+    env_file:
+      - ./env/dev.env
+    ports: 
+      - "8000"
+    networks: 
+      - url-shortener-e2e
+
+  frontend:
+    build: 
+      context: ./web
+      dockerfile: Dockerfile
+    command: ["yarn", "start"]
+    env_file:
+      - ./env/dev.dev
+    ports:
+      - "3000"
+    depends_on:
+      - nginx
+    networks:
+      - url-shortener-e2e
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    command: ["nginx-debug", "-g", "daemon off;"]
+    ports: 
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - url-shortener-e2e
+
+
+networks:
+  url-shortener-e2e: {}
