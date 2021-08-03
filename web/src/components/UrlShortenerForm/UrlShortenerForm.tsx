@@ -89,6 +89,7 @@ export const UrlShortenerForm: FC<UrlShortenerFormProps> = ({
             <FieldInput
               placeholder="https://"
               name="url"
+              data-testid="url-input"
               aria-label="url-input"
               onChange={handleChange}
               value={state.url}

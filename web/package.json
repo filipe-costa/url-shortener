@@ -27,7 +27,6 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "classnames": "^2.3.1",
     "css-loader": "4.3.0",
-    "cypress": "^8.1.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "file-loader": "6.1.1",
@@ -80,6 +79,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "6.0.0",
+    "cypress": "^8.1.0",
     "prettier": "^2.3.2"
   },
   "scripts": {

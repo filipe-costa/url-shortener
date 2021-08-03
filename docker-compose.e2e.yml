@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  backend-e2e:
+  backend:
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -11,47 +11,54 @@ services:
     ports: 
       - "8000"
     networks: 
-      - url-shortener-e2e
+      - url-shortener
 
-  frontend-e2e:
-    build: 
+  frontend:
+    build:
       context: ./web
       dockerfile: Dockerfile
-    command: ["yarn", "start"]
+    command: ["./wait-for-it/wait-for-it.sh", "http://backend:8000", "--", "yarn", "start"]
+    volumes: 
+      - ./scripts/wait-for-it:/web/wait-for-it
     env_file:
-      - ./env/dev.dev
+      - ./env/dev.env
     ports:
       - "3000"
     depends_on:
       - backend
     networks:
-      - url-shortener-e2e
+      - url-shortener
 
-  nginx-e2e:
+  nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
-    command: ["nginx-debug", "-g", "daemon off;"]
-    ports: 
+      dockerfile: Dockerfile.dev
+    command: ["./wait-for-it/wait-for-it.sh", "http://frontend:3000", "--", "nginx-debug", "-g", "daemon off;"]
+    volumes: 
+      - ./scripts/wait-for-it:/wait-for-it
+    ports:
       - "3000:80"
     depends_on:
-      - frontend-e2e
-      - backend-e2e
+      - frontend
+      - backend
     networks:
-      - url-shortener-e2e
+      - url-shortener
 
   e2e:
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    command: ["yarn", "cypress", "--headless", "--browser", "chrome"]
+    image: "cypress/included:8.1.0"
+    command: ["./wait-for-it/wait-for-it.sh", "http://frontend:3000", "--", "cypress run --headless"]
+    environment:
+      - CYPRESS_BASE_URL=http://nginx
+    volumes:
+      - ./web/cypress.json:/cypress.json
+      - ./web/cypress:/cypress
+      - ./scripts/wait-for-it:/wait-for-it
     depends_on:
-      - nginx-e2e
-      - frontend-e2e
-      - backend-e2e
+      - backend
+      - frontend
+      - nginx
     networks:
-      - url-shortener-e2e
-
+      - url-shortener
 
 networks:
-  url-shortener-e2e: {}
+  url-shortener: {}

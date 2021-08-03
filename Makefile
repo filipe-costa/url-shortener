@@ -1,8 +1,9 @@
 .PHONY: \
 		test \
-		e2e \
-		dev \
+		test-e2e \
 		stop \
+		stop-e2e \
+		dev \
 
 SHELL := /bin/bash
 
@@ -14,8 +15,8 @@ stop-test:
 	docker-compose --file docker-compose.test.yml down
 
 # Run e2e tests
-e2e: 
-	docker-compose --file docker-compose.e2e.yml up --build --force-recreate && make stop-e2e
+test-e2e: 
+	docker-compose --file docker-compose.e2e.yml up --build --force-recreate --exit-code-from e2e && make stop-e2e
 
 stop-e2e:
 	docker-compose --file docker-compose.e2e.yml down
