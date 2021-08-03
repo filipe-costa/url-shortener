@@ -44,7 +44,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
-    command: ["yarn", "cypress"]
+    command: ["yarn", "cypress", "--headless", "--browser", "chrome"]
     depends_on:
       - nginx-e2e
       - frontend-e2e
