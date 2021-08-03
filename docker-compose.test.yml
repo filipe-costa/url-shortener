@@ -13,16 +13,15 @@ services:
     networks: 
       - url-shortener-test
   
-  # web-test:
-  #   build: 
-  #     context: ./web
-  #     dockerfile: Dockerfile.test
-  #   env_file:
-  #     - ./env/test.env
-  #   ports: 
-  #     - "8000"
-  #   networks: 
-  #     - url-shortener-test
+  frontend-test:
+    build: 
+      context: ./web
+      dockerfile: Dockerfile
+    command: ["yarn", "test", "--watchAll=false"]
+    env_file:
+      - ./env/test.env
+    networks: 
+      - url-shortener-test
 
 networks: 
   url-shortener-test: {}

@@ -15,7 +15,7 @@ stop-test:
 
 # Run e2e tests
 e2e: 
-	docker-compose --file docker-compose.e2e.yml up --build --force-recreate
+	docker-compose --file docker-compose.e2e.yml up --build --force-recreate && make stop-e2e
 
 stop-e2e:
 	docker-compose --file docker-compose.e2e.yml down

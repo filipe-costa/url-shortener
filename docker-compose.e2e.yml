@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  backend:
+  backend-e2e:
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
     networks: 
       - url-shortener-e2e
 
-  frontend:
+  frontend-e2e:
     build: 
       context: ./web
       dockerfile: Dockerfile
@@ -23,11 +23,11 @@ services:
     ports:
       - "3000"
     depends_on:
-      - nginx
+      - backend
     networks:
       - url-shortener-e2e
 
-  nginx:
+  nginx-e2e:
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -35,7 +35,20 @@ services:
     ports: 
       - "3000:80"
     depends_on:
-      - backend
+      - frontend-e2e
+      - backend-e2e
+    networks:
+      - url-shortener-e2e
+
+  e2e:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    command: ["yarn", "cypress"]
+    depends_on:
+      - nginx-e2e
+      - frontend-e2e
+      - backend-e2e
     networks:
       - url-shortener-e2e
 

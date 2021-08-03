@@ -4,4 +4,4 @@ WORKDIR /backend
 
 COPY . ./
 
-RUN yarn install
+RUN yarn

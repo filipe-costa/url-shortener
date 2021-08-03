@@ -1,12 +1,17 @@
-import React, {FC, FormHTMLAttributes} from "react";
+import React, { FC, FormHTMLAttributes } from "react";
 import cx from "classnames";
 
-export const Form: FC<FormHTMLAttributes<HTMLFormElement>> = ({className, children, onSubmit}) => {
-  const classes = cx(className, "flex flex-col w-full max-w-screen-sm")
+export const Form: FC<FormHTMLAttributes<HTMLFormElement>> = ({
+  className,
+  children,
+  onSubmit,
+  ...props
+}) => {
+  const classes = cx(className, "flex flex-col w-full max-w-screen-sm");
 
   return (
-    <form className={classes} onSubmit={onSubmit}>
+    <form {...props} className={classes} onSubmit={onSubmit}>
       {children}
     </form>
-  )
-}
+  );
+};
