@@ -1,4 +1,38 @@
 # URL Shortener
+## Environment files
+
+Before running any command, make sure that ./env/{name}.env file exists with the following variables set.
+If running in test environment, NODE_ENV = test and HASH_SALT = test so tests don't fail.
+
+    NODE_ENV =
+
+    # APP settings
+    HTTP_PORT = 8000
+    HASH_SALT =
+
+    # DB Settings 
+    TYPEORM_CONNECTION = better-sqlite3
+    TYPEORM_DATABASE = 
+    TYPEORM_SYNCHRONIZE = 
+    TYPEORM_ENTITIES = src/db/entity/*.ts
+    TYPEORM_MIGRATIONS = src/db/migrations/*.ts
+    TYPEORM_ENTITIES_DIR = src/db/entity
+    TYPEORM_MIGRATIONS_DIR = src/db/migrations
+
+## Commands
+
+  Unit tests:
+  
+      make test
+  
+  End-to-end tests:
+
+      make test-e2e
+  
+  Development environment:
+
+      make dev
+
 ## Tech stack
 ### Backend
 
@@ -17,20 +51,6 @@
 - Jest
 - Cypress
 - Docker
-
-## Commands
-
-  Unit tests:
-  
-      make test
-  
-  End-to-end tests:
-
-      make test-e2e
-  
-  Development environment:
-
-      make dev
 
 ## Sequence diagram
 
