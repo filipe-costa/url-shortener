@@ -98,7 +98,7 @@ The fourth option splits both the FE and BE into different domains or servers, u
 - Docker and Docker-Compose
 - React Testing Library
 - Cypress
-- TypeORM (new)]
+- TypeORM (new)
 - Sqlite3
 - NGINX
 - Tailwindcss (new)
