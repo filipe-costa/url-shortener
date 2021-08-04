@@ -11,7 +11,7 @@ services:
     ports: 
       - "8000"
     networks: 
-      - url-shortener
+      - url-shortener-e2e
 
   frontend:
     build:
@@ -27,7 +27,7 @@ services:
     depends_on:
       - backend
     networks:
-      - url-shortener
+      - url-shortener-e2e
 
   nginx:
     build:
@@ -42,7 +42,7 @@ services:
       - frontend
       - backend
     networks:
-      - url-shortener
+      - url-shortener-e2e
 
   e2e:
     image: "cypress/included:8.1.0"
@@ -58,7 +58,7 @@ services:
       - frontend
       - nginx
     networks:
-      - url-shortener
+      - url-shortener-e2e
 
 networks:
-  url-shortener: {}
+  url-shortener-e2e: {}
