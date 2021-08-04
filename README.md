@@ -1,23 +1,40 @@
 # URL Shortener
 ## Environment files
 
-Before running any command, make sure that ./env/{name}.env file exists with the following variables set.
-If running in test environment, NODE_ENV = test and HASH_SALT = test so tests don't fail.
+### Test and Development
+- Before running any command, make sure that ./env/{test, dev}.env file exists
+- If running in test environment, set NODE_ENV and HASH_SALT values to "test", TYPEORM_SYNCRONIZE = true and TYPEORM_DATABASE = :memory:
 
-    NODE_ENV =
+      NODE_ENV =
 
-    # APP settings
-    HTTP_PORT = 8000
-    HASH_SALT =
+      # APP settings
+      HTTP_PORT = 8000
+      HASH_SALT =
 
-    # DB Settings 
-    TYPEORM_CONNECTION = better-sqlite3
-    TYPEORM_DATABASE = 
-    TYPEORM_SYNCHRONIZE = 
-    TYPEORM_ENTITIES = src/db/entity/*.ts
-    TYPEORM_MIGRATIONS = src/db/migrations/*.ts
-    TYPEORM_ENTITIES_DIR = src/db/entity
-    TYPEORM_MIGRATIONS_DIR = src/db/migrations
+      # DB Settings 
+      TYPEORM_CONNECTION = better-sqlite3
+      TYPEORM_DATABASE = 
+      TYPEORM_SYNCHRONIZE = 
+      TYPEORM_ENTITIES = src/db/entity/*.ts
+      TYPEORM_MIGRATIONS = src/db/migrations/*.ts
+      TYPEORM_ENTITIES_DIR = src/db/entity
+      TYPEORM_MIGRATIONS_DIR = src/db/migrations
+
+### Production
+
+- It is best practice to use environment variables or secrets at run-time (i.e. docker swarm / kubernetes), see: [secrets](https://docs.docker.com/engine/swarm/secrets/).
+- Manually create the database from the schema and run migrations if necessary, either by using TypeORM or SQL file.
+
+      HTTP_PORT = 8000
+      HASH_SALT = prod
+      NODE_ENV = production
+
+      # DB Settings 
+      TYPEORM_CONNECTION = better-sqlite3
+      TYPEORM_DATABASE = build/db/storage/prod.db
+      TYPEORM_ENTITIES = build/db/entity/*.js,modules/**/entity/*.js
+      TYPEORM_MIGRATIONS_DIR = build/db/migration/
+      TYPEORM_SYNCHRONIZE = false
 
 ## Commands
 
@@ -81,6 +98,13 @@ The fourth option splits both the FE and BE into different domains or servers, u
 - Docker and Docker-Compose
 - React Testing Library
 - Cypress
-- TypeORM (new)
+- TypeORM (new)]
+- Sqlite3
 - NGINX
 - Tailwindcss (new)
+
+## What could have been improved
+- Separate FE and BE unit tests from docker-compose.test.yml or check if any of the containers have exited, therefore exiting earlier before any other tests start.
+- How host and scheme variables are set in the NGINX dev configuration file to make it work locally with the Backend is very hacky, therefore not recommended besides local development, theoretically should work in production but wasn't tested with a domain.
+- Wait-for-it.sh script only checks for available TCP ports. It works well when working with a Backend or Database server but fails to check if the Frontend application is ready. The issue becomes apparent when running E2E tests Cypress might fail to run. By modifying the script to curl for the page before running Cypress would potentially fix this issue.
+- Either use in Memory cache for the requests or Redis that would comply with the same caching interface, this would prevent hitting the database for every single request.
